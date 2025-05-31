@@ -1,5 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { StatusEnum } from "../enums/project.enum";
+import { User } from "src/user/entities/user.entity";
+import { Category } from "src/category/entities/category.entity";
 
 @Entity({ name: "Projects" })
 export class Project {
@@ -14,4 +22,10 @@ export class Project {
 
   @Column({ type: "enum", enum: StatusEnum, default: StatusEnum.Planning })
   status: StatusEnum;
+
+  @ManyToOne(() => User, (user) => user.project_id)
+  userId: User;
+
+  @ManyToOne(() => Category, (category) => category.projectIds)
+  categoryIds: Category;
 }
